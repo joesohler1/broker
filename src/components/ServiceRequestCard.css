@@ -1,0 +1,143 @@
+.service-request-card {
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+  transition: all 0.2s;
+}
+
+.service-request-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.request-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.request-title {
+  flex: 1;
+}
+
+.request-title h4 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin: 0 0 4px 0;
+  font-weight: 600;
+}
+
+.request-id {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.request-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.status-badge,
+.priority-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.request-details {
+  margin-bottom: 20px;
+}
+
+.request-description {
+  color: #34495e;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.request-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.meta-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.meta-label {
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+.meta-value {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.request-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #ecf0f1;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.view-btn {
+  background-color: #3398cc;
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #40a2d9;
+}
+
+.message-btn {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  border: 1px solid #bdc3c7;
+}
+
+.message-btn:hover {
+  background-color: #d5dbdb;
+}
+
+@media (max-width: 768px) {
+  .service-request-card {
+    padding: 16px;
+  }
+  
+  .request-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .request-meta {
+    grid-template-columns: 1fr;
+  }
+  
+  .request-actions {
+    flex-direction: column;
+  }
+  
+  .action-btn {
+    width: 100%;
+  }
+}
