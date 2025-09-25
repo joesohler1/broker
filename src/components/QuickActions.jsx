@@ -11,6 +11,20 @@ const QuickActions = ({ onAction }) => {
       color: '#3398cc'
     },
     {
+      id: 'current-requests',
+      title: 'Current Requests',
+      description: 'View and manage your active requests',
+      icon: '📋',
+      color: '#28a745'
+    },
+    {
+      id: 'current-services',
+      title: 'Active Service Requests',
+      description: 'View contracted work in progress',
+      icon: '🔨',
+      color: '#9b59b6'
+    },
+    {
       id: 'emergency',
       title: 'Emergency Service',
       description: 'Urgent repairs needed immediately',
@@ -28,7 +42,7 @@ const QuickActions = ({ onAction }) => {
       id: 'view-history',
       title: 'Service History',
       description: 'View past repairs and maintenance',
-      icon: '📋',
+      icon: '📊',
       color: '#ff9800'
     },
     {
@@ -36,7 +50,7 @@ const QuickActions = ({ onAction }) => {
       title: 'Property Documents',
       description: 'Access warranties, manuals, and records',
       icon: '📄',
-      color: '#9c27b0'
+      color: '#2196f3'
     },
     {
       id: 'payments',

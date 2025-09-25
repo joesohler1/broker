@@ -21,11 +21,11 @@
   gap: 1.5rem;
 }
 
-.back-button {
-  background: rgba(52, 152, 219, 0.1);
+.new-service-request-page .back-button {
+  background: #e8f4fd !important;
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(52, 152, 219, 0.3);
-  color: #3498db;
+  border: 2px solid #b8ddf2 !important;
+  color: #2c3e50 !important;
   padding: 0.75rem 1.5rem;
   border-radius: 25px;
   font-weight: 600;
@@ -38,9 +38,9 @@
 }
 
 .back-button:hover {
-  background: rgba(52, 152, 219, 0.2);
+  background: #d1e9f8 !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 4px 12px rgba(51, 152, 204, 0.2);
 }
 
 .request-title {
@@ -243,6 +243,8 @@
 
 .form-group {
   margin-bottom: 1.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .form-group.full-width {
@@ -675,9 +677,12 @@
     font-size: 1rem;
   }
   
-  .back-button {
+  .new-service-request-page .back-button {
     padding: 0.625rem 1.25rem;
     font-size: 0.9rem;
+    background: #e8f4fd !important;
+    border: 2px solid #b8ddf2 !important;
+    color: #2c3e50 !important;
   }
   
   .priority-option,
@@ -766,6 +771,69 @@
 .edit-step-btn:hover {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
+}
+
+/* Edit Mode Styles */
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.save-btn, .cancel-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.save-btn {
+  background: #28a745;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.review-edit-grid {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+.review-edit-grid .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.review-edit-grid .form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.photos-edit-container, .location-edit-container {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  margin: 1rem;
+}
+
+.budget-selector-container {
+  width: 100%;
 }
 
 .review-grid {

@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import './NewServiceRequestPage.css';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ImageUpload from '../components/ImageUpload';
-import LocationRadius from '../components/LocationRadius';
 import ServiceCategorySelector from '../components/ServiceCategorySelector';
 import BudgetSelector from '../components/BudgetSelector';
+import LocationRadius from '../components/LocationRadius';
+import './NewServiceRequestPage.css'; // Reuse the same styles
 
-const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
+const EditServiceRequestPage = ({ onLogout, onBack, userProperties, requestData }) => {
   const [formData, setFormData] = useState({
     title: '',
-    description: '',
     category: '',
-    priority: 'medium',
-    property: userProperties?.[0]?.id || '',
+    description: '',
+    priority: '',
+    property: '',
     images: [],
     budget: '',
     timeline: '',
-    searchRadius: 10, // miles
+    searchRadius: 10,
     preferredTiming: 'flexible',
     contactMethod: 'app',
     additionalNotes: ''
@@ -34,6 +34,26 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
     location: false
   });
 
+  // Pre-populate form with existing request data
+  useEffect(() => {
+    if (requestData) {
+      setFormData({
+        title: requestData.title || '',
+        category: requestData.category || '',
+        description: requestData.description || '',
+        priority: requestData.priority || '',
+        property: requestData.property?.id || requestData.property || '',
+        images: requestData.images || [],
+        budget: requestData.budget || '',
+        timeline: requestData.timeline || '',
+        searchRadius: requestData.searchRadius || 10,
+        preferredTiming: requestData.preferredTiming || 'flexible',
+        contactMethod: requestData.contactMethod || 'app',
+        additionalNotes: requestData.additionalNotes || ''
+      });
+    }
+  }, [requestData]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -50,17 +70,10 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
     }
   };
 
-  const handleImageUpload = (images) => {
-    setFormData(prev => ({
-      ...prev,
-      images: images
-    }));
-  };
-
   const handleCategorySelect = (category) => {
     setFormData(prev => ({
       ...prev,
-      category: category
+      category
     }));
     
     if (errors.category) {
@@ -91,87 +104,63 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
       ...prev,
       [section]: false
     }));
-    // Validation could be added here if needed
   };
 
   const cancelSectionEdit = (section) => {
-    // Could restore previous values here if we wanted to support cancel
     setEditingSections(prev => ({
       ...prev,
       [section]: false
     }));
   };
 
-  const handleBudgetChange = (budget) => {
-    setFormData(prev => ({
-      ...prev,
-      budget: budget
-    }));
-    
-    if (errors.budget) {
-      setErrors(prev => ({
-        ...prev,
-        budget: ''
-      }));
-    }
-  };
-
-  const handleTimelineChange = (timeline) => {
-    setFormData(prev => ({
-      ...prev,
-      timeline: timeline
-    }));
-  };
-
   const validateStep = (step) => {
     const newErrors = {};
-    
+
     switch (step) {
       case 1:
-        if (!formData.title.trim()) newErrors.title = 'Title is required';
-        if (!formData.description.trim()) newErrors.description = 'Description is required';
+        if (!formData.title) newErrors.title = 'Title is required';
         if (!formData.category) newErrors.category = 'Please select a category';
         if (!formData.property) newErrors.property = 'Please select a property';
+        if (!formData.description) newErrors.description = 'Description is required';
+        if (!formData.priority) newErrors.priority = 'Please select a priority';
         break;
       case 2:
-        if (!formData.images || formData.images.length === 0) {
-          newErrors.images = 'At least one photo is required to help handymen provide accurate quotes';
-        }
+        // Photos are optional, no validation needed
         break;
       case 3:
         if (!formData.budget) newErrors.budget = 'Please select a budget range';
         break;
       case 4:
-        // Final review - all previous validations should be done
+        // Review step, no additional validation
         break;
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const getFieldDisplayName = (fieldKey) => {
-    const fieldNames = {
-      title: 'Service Title',
-      description: 'Service Description',
-      category: 'Service Category',
-      property: 'Property Selection',
-      images: 'Photos',
-      budget: 'Budget Range'
-    };
-    return fieldNames[fieldKey] || fieldKey;
-  };
-
   const getValidationSummary = () => {
-    const errorKeys = Object.keys(errors);
-    if (errorKeys.length === 0) return null;
+    const fieldLabels = {
+      title: 'Service Title',
+      category: 'Category',
+      description: 'Description',
+      priority: 'Priority Level',
+      property: 'Property Selection',
+      budget: 'Budget Range',
+      timeline: 'Timeline'
+    };
+
+    const errorFields = Object.keys(errors);
+    if (errorFields.length === 0) return null;
 
     return (
       <div className="validation-summary">
-        <h4>Please complete the following required fields:</h4>
+        <h4>Please fix the following issues:</h4>
         <ul>
-          {errorKeys.map(key => (
-            <li key={key}>{getFieldDisplayName(key)}</li>
+          {errorFields.map(field => (
+            <li key={field}>
+              <strong>{fieldLabels[field] || field}:</strong> {errors[field]}
+            </li>
           ))}
         </ul>
       </div>
@@ -180,44 +169,32 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
 
   const formatBudgetDisplay = (budget) => {
     if (!budget) return 'Not selected';
-    if (budget.startsWith('custom-')) {
-      return `$${budget.replace('custom-', '')}`;
-    }
-    const budgetLabels = {
-      'under-100': 'Under $100',
-      '100-250': '$100 - $250',
-      '250-500': '$250 - $500',
-      '500-1000': '$500 - $1,000',
-      '1000-2500': '$1,000 - $2,500',
-      '2500-5000': '$2,500 - $5,000',
-      'over-5000': 'Over $5,000'
-    };
-    return budgetLabels[budget] || budget;
+    return budget;
   };
 
   const formatTimelineDisplay = (timeline) => {
     const timelineLabels = {
-      'same-day': 'Same Day',
-      'within-week': 'Within a Week',
-      'within-month': 'Within a Month',
-      'flexible-timing': 'Flexible Timing'
+      'asap': 'ASAP (Within 24 hours)',
+      'this-week': 'This Week (Within 7 days)',
+      'next-week': 'Next Week (1-2 weeks)',
+      'flexible': 'Flexible (Whenever convenient)'
     };
     return timelineLabels[timeline] || timeline;
   };
 
-  const formatPropertyDisplay = (propertyId) => {
-    const property = userProperties?.find(p => p.id === propertyId);
-    return property ? `${property.address}` : 'No property selected';
-  };
-
   const formatPriorityDisplay = (priority) => {
     const priorityLabels = {
-      'low': 'Low Priority',
-      'medium': 'Medium Priority', 
-      'high': 'High Priority',
-      'emergency': 'Emergency'
+      'low': 'Low Priority - Can wait a week or more',
+      'medium': 'Medium Priority - Within a few days',
+      'high': 'High Priority - Within 24-48 hours'
     };
     return priorityLabels[priority] || priority;
+  };
+
+  const formatPropertyDisplay = (property) => {
+    if (!property) return 'No property selected';
+    const propertyObj = userProperties?.find(p => p.id === property);
+    return propertyObj ? `${propertyObj.address}` : 'No property selected';
   };
 
   const formatContactTimeDisplay = (timing) => {
@@ -240,11 +217,11 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
   const nextStep = () => {
     if (validateStep(currentStep)) {
       if (currentStep === totalSteps) {
-        // If on review step (step 4), submit the form
-        console.log('Service request submitted:', formData);
-        alert('Service request submitted successfully! You will be notified when handymen respond.');
-        // Here you would submit to your backend
-        onBack(); // Return to dashboard
+        // If on review step (step 4), save the changes
+        console.log('Service request updated:', formData);
+        alert('Service request updated successfully!');
+        // Here you would update to your backend
+        onBack(); // Return to current requests
       } else {
         setCurrentStep(prev => Math.min(prev + 1, totalSteps));
         // Scroll to top after step change
@@ -266,18 +243,17 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
 
   const priorities = [
     { value: 'low', label: 'Low Priority', description: 'Can wait a week or more' },
-    { value: 'medium', label: 'Medium Priority', description: 'Needed within a few days' },
-    { value: 'high', label: 'High Priority', description: 'Needed within 24 hours' },
-    { value: 'emergency', label: 'Emergency', description: 'Immediate attention required' }
+    { value: 'medium', label: 'Medium Priority', description: 'Within a few days' },
+    { value: 'high', label: 'High Priority', description: 'Within 24-48 hours' }
   ];
 
   const getStepTitle = () => {
     switch (currentStep) {
-      case 1: return 'Job Details';
-      case 2: return 'Add Photos';
-      case 3: return 'Budget & Timeline';
-      case 4: return 'Location & Review';
-      default: return 'New Service Request';
+      case 1: return 'Edit Job Details';
+      case 2: return 'Update Photos';
+      case 3: return 'Adjust Budget & Timeline';
+      case 4: return 'Review Changes';
+      default: return 'Edit Service Request';
     }
   };
 
@@ -287,125 +263,112 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
       
       <div className="service-request-content">
         <div className="request-header">
-          <button className="back-button" onClick={onBack}>
-            ← Back to Dashboard
-          </button>
-          <div className="request-title">
-            <h1>Create New Service Request</h1>
-            <p>Get connected with qualified handymen in your area</p>
+          <div className="header-main">
+            <button type="button" className="back-button" onClick={onBack}>
+              ← Back to Current Requests
+            </button>
+            <div className="request-title">
+              <h1>Edit Service Request</h1>
+              <p>Update your service request details</p>
+            </div>
           </div>
-        </div>
 
-        {/* Progress Indicator */}
-        <div className="progress-indicator">
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-            ></div>
-          </div>
-          <div className="step-labels">
-            {[1, 2, 3, 4].map(step => (
+          {/* Progress Indicator */}
+          <div className="progress-container">
+            <div className="progress-info">
+              <span className="step-indicator">Step {currentStep} of {totalSteps}</span>
+              <span className="step-title">{getStepTitle()}</span>
+            </div>
+            <div className="progress-bar">
               <div 
-                key={step} 
-                className={`step-label ${currentStep >= step ? 'active' : ''} ${currentStep === step ? 'current' : ''}`}
-              >
-                <span className="step-number">{step}</span>
-                <span className="step-text">
-                  {step === 1 ? 'Details' : step === 2 ? 'Photos' : step === 3 ? 'Budget' : 'Review'}
-                </span>
-              </div>
-            ))}
+                className="progress-fill" 
+                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        <div className="request-form-container">
-          <div className="form-section-header">
-            <h2>{getStepTitle()}</h2>
-          </div>
-
+        <div className="form-container">
           <form onSubmit={handleSubmit}>
             {/* Step 1: Job Details */}
             {currentStep === 1 && (
               <div className="form-step">
-                <div className="form-grid">
-                  <div className="form-group full-width">
-                    <label htmlFor="title">Job Title *</label>
+                <div className="step-content">
+                  <div className="form-group">
+                    <label htmlFor="title">Service Title *</label>
                     <input
                       type="text"
                       id="title"
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
+                      placeholder="Brief title for your service request"
                       className={errors.title ? 'error' : ''}
-                      placeholder="e.g., Fix leaky kitchen faucet"
-                      maxLength="100"
                     />
                     {errors.title && <span className="error-message">{errors.title}</span>}
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="property">Property *</label>
-                    <select
-                      id="property"
-                      name="property"
-                      value={formData.property}
-                      onChange={handleInputChange}
-                      className={errors.property ? 'error' : ''}
-                    >
-                      <option value="">Select property</option>
-                      {userProperties?.map(property => (
-                        <option key={property.id} value={property.id}>
-                          {property.address}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.property && <span className="error-message">{errors.property}</span>}
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="priority">Priority Level *</label>
-                    <select
-                      id="priority"
-                      name="priority"
-                      value={formData.priority}
-                      onChange={handleInputChange}
-                      className={errors.priority ? 'error' : ''}
-                    >
-                      <option value="">Select priority level</option>
-                      {priorities.map(priority => (
-                        <option key={priority.value} value={priority.value}>
-                          {priority.label} - {priority.description}
-                        </option>
-                      ))}
-                    </select>
-                    {errors.priority && <span className="error-message">{errors.priority}</span>}
-                  </div>
-
-                  <div className="form-group full-width">
-                    <ServiceCategorySelector 
-                      selectedCategory={formData.category}
-                      onCategorySelect={handleCategorySelect}
-                      error={errors.category}
-                    />
-                  </div>
-
-                  <div className="form-group full-width">
-                    <label htmlFor="description">Detailed Description *</label>
+                    <label htmlFor="description">Description *</label>
                     <textarea
                       id="description"
                       name="description"
                       value={formData.description}
                       onChange={handleInputChange}
+                      placeholder="Detailed description of the work needed..."
+                      rows="4"
                       className={errors.description ? 'error' : ''}
-                      placeholder="Describe the issue in detail, including any symptoms, when it started, and what you've already tried..."
-                      rows="5"
-                      maxLength="1000"
                     />
-                    <div className="character-count">
-                      {formData.description.length}/1000 characters
-                    </div>
                     {errors.description && <span className="error-message">{errors.description}</span>}
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="property">Property *</label>
+                      <select
+                        id="property"
+                        name="property"
+                        value={formData.property}
+                        onChange={handleInputChange}
+                        className={errors.property ? 'error' : ''}
+                      >
+                        <option value="">Select property</option>
+                        {userProperties?.map(property => (
+                          <option key={property.id} value={property.id}>
+                            {property.address}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.property && <span className="error-message">{errors.property}</span>}
+                    </div>
+
+                    <div className="form-group">
+                      <label htmlFor="priority">Priority Level *</label>
+                      <select
+                        id="priority"
+                        name="priority"
+                        value={formData.priority}
+                        onChange={handleInputChange}
+                        className={errors.priority ? 'error' : ''}
+                      >
+                        <option value="">Select priority level</option>
+                        {priorities.map(priority => (
+                          <option key={priority.value} value={priority.value}>
+                            {priority.label} - {priority.description}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.priority && <span className="error-message">{errors.priority}</span>}
+                    </div>
+                  </div>
+
+                  <div className="form-group category-group">
+                    <label>Service Category *</label>
+                    <ServiceCategorySelector 
+                      selectedCategory={formData.category}
+                      onCategorySelect={handleCategorySelect}
+                    />
+                    {errors.category && <span className="error-message">{errors.category}</span>}
                   </div>
                 </div>
               </div>
@@ -414,13 +377,10 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
             {/* Step 2: Photos */}
             {currentStep === 2 && (
               <div className="form-step">
-                <div className="photo-section">
+                <div className="step-content">
                   <ImageUpload 
                     images={formData.images}
-                    onImagesChange={handleImageUpload}
-                    maxImages={6}
-                    required={true}
-                    error={errors.images}
+                    onImagesChange={(images) => setFormData(prev => ({...prev, images}))}
                   />
                 </div>
               </div>
@@ -429,25 +389,25 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
             {/* Step 3: Budget & Timeline */}
             {currentStep === 3 && (
               <div className="form-step">
-                <div className="budget-timeline-section">
+                <div className="step-content">
                   <BudgetSelector 
-                    budget={formData.budget}
-                    timeline={formData.timeline}
-                    onBudgetChange={handleBudgetChange}
-                    onTimelineChange={handleTimelineChange}
-                    errors={errors}
+                    selectedBudget={formData.budget}
+                    onBudgetSelect={(budget) => setFormData(prev => ({...prev, budget}))}
+                    selectedTimeline={formData.timeline}
+                    onTimelineSelect={(timeline) => setFormData(prev => ({...prev, timeline}))}
                   />
+                  {errors.budget && <span className="error-message">{errors.budget}</span>}
                 </div>
               </div>
             )}
 
-            {/* Step 4: Review & Submit */}
+            {/* Step 4: Review Changes - Reuse the same review logic from NewServiceRequestPage */}
             {currentStep === 4 && (
               <div className="form-step">
                 <div className="review-section">
                   <div className="review-header">
-                    <h2>Review Your Service Request</h2>
-                    <p>Please review all details before submitting your request</p>
+                    <h2>Review Your Changes</h2>
+                    <p>Please review all updated details before saving</p>
                   </div>
 
                   {/* Service Details Review */}
@@ -509,7 +469,7 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
                         </div>
                       </div>
                     ) : (
-                      // Edit mode
+                      // Edit mode - Same as step 1 but in review format
                       <div className="review-edit-grid">
                         <div className="form-group">
                           <label htmlFor="edit-title">Service Title</label>
@@ -616,19 +576,14 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
                         {formData.images && formData.images.length > 0 ? (
                           <div className="photos-grid">
                             {formData.images.map((image, index) => {
-                              // Determine the image source safely
                               let imageSrc;
                               if (image.url) {
-                                // If image has a URL property, use it
                                 imageSrc = image.url;
                               } else if (image instanceof File || image instanceof Blob) {
-                                // If image is a File/Blob, create object URL
                                 imageSrc = URL.createObjectURL(image);
                               } else if (typeof image === 'string') {
-                                // If image is a string URL
                                 imageSrc = image;
                               } else {
-                                // Fallback - skip this image
                                 return null;
                               }
 
@@ -638,7 +593,6 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
                                     src={imageSrc} 
                                     alt={`Upload ${index + 1}`}
                                     onLoad={(e) => {
-                                      // Only revoke if we created the URL
                                       if (!image.url && (image instanceof File || image instanceof Blob)) {
                                         URL.revokeObjectURL(e.target.src);
                                       }
@@ -829,11 +783,10 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
                   {/* Submit Confirmation */}
                   <div className="submit-confirmation">
                     <div className="confirmation-box">
-                      <h4>🚀 Ready to Submit?</h4>
+                      <h4>💾 Ready to Save Changes?</h4>
                       <p>
-                        By submitting this request, qualified handymen in your area will be notified 
-                        and can provide quotes for your project. You'll receive notifications when 
-                        responses are received.
+                        Your updated service request will be saved and handymen will see 
+                        the latest information. Any existing responses will remain intact.
                       </p>
                     </div>
                   </div>
@@ -851,11 +804,11 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
               
               {currentStep <= totalSteps ? (
                 <button type="button" className="nav-btn next-btn" onClick={nextStep}>
-                  {currentStep === totalSteps ? 'Submit Request' : 'Next →'}
+                  {currentStep === totalSteps ? 'Save Changes' : 'Next →'}
                 </button>
               ) : (
                 <button type="submit" className="nav-btn submit-btn">
-                  Submit Request
+                  Save Changes
                 </button>
               )}
             </div>
@@ -869,4 +822,4 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
   );
 };
 
-export default NewServiceRequestPage;
+export default EditServiceRequestPage;

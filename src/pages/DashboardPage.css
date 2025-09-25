@@ -7,10 +7,21 @@
   padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
+  background-color: #f0f3f6;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  grid-template-areas: 
+    "header header"
+    "properties quick-actions"
+    "requests appointments"
+    "requests activity";
 }
 
 .dashboard-header {
   margin-bottom: 30px;
+  grid-area: header;
 }
 
 .dashboard-header h1 {
@@ -26,21 +37,13 @@
   margin: 0;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  grid-template-areas: 
-    "properties quick-actions"
-    "requests appointments"
-    "requests activity";
-}
+
 
 .dashboard-section {
   background: white;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
   border: 1px solid #e1e8ed;
 }
 
@@ -53,22 +56,97 @@
 
 .properties-section {
   grid-area: properties;
+  background: linear-gradient(135deg, #f8fafb 0%, #f2f7fa 100%);
+  border: 1px solid #d4e6f1;
+  position: relative;
+  overflow: hidden;
+}
+
+.properties-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+  opacity: 0.7;
 }
 
 .quick-actions-section {
   grid-area: quick-actions;
+  background: linear-gradient(135deg, #faf9fb 0%, #f5f2f8 100%);
+  border: 1px solid #e1d6f1;
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-actions-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #9b59b6 0%, #8e44ad 100%);
+  opacity: 0.7;
 }
 
 .requests-section {
   grid-area: requests;
+  background: linear-gradient(135deg, #f9fbfa 0%, #f3f8f5 100%);
+  border: 1px solid #d4f1e1;
+  position: relative;
+  overflow: hidden;
+}
+
+.requests-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #27ae60 0%, #229954 100%);
+  opacity: 0.7;
 }
 
 .appointments-section {
   grid-area: appointments;
+  background: linear-gradient(135deg, #fbfaf9 0%, #f8f5f3 100%);
+  border: 1px solid #f1e1d4;
+  position: relative;
+  overflow: hidden;
+}
+
+.appointments-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #e67e22 0%, #d35400 100%);
+  opacity: 0.7;
 }
 
 .activity-section {
   grid-area: activity;
+  background: linear-gradient(135deg, #fbfafb 0%, #f7f5f8 100%);
+  border: 1px solid #ede1f1;
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%);
+  opacity: 0.7;
 }
 
 .properties-grid {
@@ -109,21 +187,39 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1200px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
+@media (min-width: 1201px) {
+  .dashboard-content {
+    grid-template-columns: 2fr 1fr;
     grid-template-areas: 
-      "properties"
-      "quick-actions"
-      "requests"
-      "appointments"
-      "activity";
+      "header header"
+      "properties quick-actions"
+      "requests appointments"
+      "requests activity";
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 769px) {
+  .dashboard-content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      "header header"
+      "properties properties"
+      "quick-actions requests"
+      "appointments activity";
   }
 }
 
 @media (max-width: 768px) {
   .dashboard-content {
     padding: 16px;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "header"
+      "properties"
+      "quick-actions"
+      "requests"
+      "appointments"
+      "activity";
   }
   
   .dashboard-section {

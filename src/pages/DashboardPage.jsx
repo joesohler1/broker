@@ -14,7 +14,7 @@ import {
   mockUpcomingAppointments 
 } from '../data/mockData';
 
-const DashboardPage = ({ onLogout, onNavigateToServiceRequest }) => {
+const DashboardPage = ({ onLogout, onNavigateToServiceRequest, onNavigateToCurrentRequests }) => {
   const [activeRequests] = useState(mockServiceRequests.filter(req => req.status !== 'Completed'));
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [properties, setProperties] = useState(mockProperties);
@@ -25,6 +25,9 @@ const DashboardPage = ({ onLogout, onNavigateToServiceRequest }) => {
     switch (actionId) {
       case 'new-request':
         onNavigateToServiceRequest();
+        break;
+      case 'current-requests':
+        onNavigateToCurrentRequests();
         break;
       case 'emergency':
         alert('Opening emergency service form...');
@@ -87,55 +90,58 @@ const DashboardPage = ({ onLogout, onNavigateToServiceRequest }) => {
           <p className="dashboard-subtitle">Here's what's happening with your properties</p>
         </div>
 
-        <div className="dashboard-grid">
-          {/* Properties Section */}
-          <section className="dashboard-section properties-section">
-            <h2>Your Properties</h2>
-            <div className="properties-grid">
-              {properties.map(property => (
-                <PropertyCard 
-                  key={property.id} 
-                  property={property} 
-                  onClick={() => handlePropertyClick(property)}
-                />
-              ))}
-            </div>
-          </section>
+        {/* Properties Section */}
+        <section className="dashboard-section properties-section">
+          <h2>Your Properties</h2>
+          <div className="properties-grid">
+            {properties.map(property => (
+              <PropertyCard 
+                key={property.id} 
+                property={property} 
+                onClick={() => handlePropertyClick(property)}
+              />
+            ))}
+          </div>
+        </section>
 
-          {/* Quick Actions */}
-          <section className="dashboard-section quick-actions-section">
-            <QuickActions onAction={handleQuickAction} />
-          </section>
+        {/* Quick Actions */}
+        <section className="dashboard-section quick-actions-section">
+          <QuickActions onAction={handleQuickAction} />
+        </section>
 
-          {/* Active Service Requests */}
-          <section className="dashboard-section requests-section">
-            <h2>Active Service Requests ({activeRequests.length})</h2>
-            <div className="requests-grid">
-              {activeRequests.length === 0 ? (
-                <div className="no-requests">
-                  <p>No active service requests</p>
-                  <button className="create-request-btn" onClick={() => handleQuickAction('new-request')}>
-                    Create New Request
-                  </button>
-                </div>
-              ) : (
-                activeRequests.map(request => (
-                  <ServiceRequestCard key={request.id} request={request} />
-                ))
-              )}
-            </div>
-          </section>
+        {/* Active Service Requests */}
+        <section className="dashboard-section requests-section">
+          <h2>Active Service Requests</h2>
+          <div className="requests-grid">
+            {activeRequests.length === 0 ? (
+              <div className="no-requests">
+                <p>No active service requests</p>
+                <button className="create-request-btn" onClick={() => handleQuickAction('new-request')}>
+                  Create New Request
+                </button>
+              </div>
+            ) : (
+              activeRequests.map(request => (
+                <ServiceRequestCard key={request.id} request={request} />
+              ))
+            )}
+          </div>
+        </section>
 
           {/* Upcoming Appointments */}
           <section className="dashboard-section appointments-section">
             <UpcomingAppointments appointments={mockUpcomingAppointments} />
           </section>
 
-          {/* Recent Activity */}
-          <section className="dashboard-section activity-section">
-            <RecentActivity activities={mockRecentActivity} />
-          </section>
-        </div>
+        {/* Upcoming Appointments */}
+        <section className="dashboard-section appointments-section">
+          <UpcomingAppointments appointments={mockUpcomingAppointments} />
+        </section>
+
+        {/* Recent Activity */}
+        <section className="dashboard-section activity-section">
+          <RecentActivity activities={mockRecentActivity} />
+        </section>
       </div>
     </div>
   );
