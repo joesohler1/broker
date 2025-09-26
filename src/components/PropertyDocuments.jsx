@@ -92,13 +92,11 @@ const PropertyDocuments = ({ propertyId }) => {
     e.preventDefault();
     setDragOver(false);
     const files = Array.from(e.dataTransfer.files);
-    console.log('Files dropped:', files);
     alert(`${files.length} file(s) ready to upload!`);
   };
 
   const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
-    console.log('Files selected:', files);
     alert(`${files.length} file(s) ready to upload!`);
   };
 

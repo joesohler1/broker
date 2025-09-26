@@ -129,7 +129,6 @@ const PropertyServiceHistory = ({ propertyId }) => {
   };
 
   // Note: propertyId is used for filtering in a real implementation
-  console.log('Showing service history for property:', propertyId);
 
   return (
     <div className="property-service-history">

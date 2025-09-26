@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import './CurrentRequestsPage.css';
+import { scrollToTop } from '../utils/scrollUtils';
 
-const CurrentRequestsPage = ({ onLogout, onBack, onNavigateToEdit }) => {
+const CurrentRequestsPage = ({ onLogout, onBack, onNavigateToEdit, onNavigateToProfile, onNavigateToAppSettings }) => {
   const [currentRequests, setCurrentRequests] = useState([]);
   const [filterStatus, setFilterStatus] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
 
-  // Mock data for current requests - in a real app, this would come from your backend
+  // Load user's actual service requests from localStorage
   useEffect(() => {
+    // Define mock data
     const mockRequests = [
       {
         id: 1,
@@ -114,7 +116,42 @@ const CurrentRequestsPage = ({ onLogout, onBack, onNavigateToEdit }) => {
         ]
       }
     ];
-    setCurrentRequests(mockRequests);
+
+    // Get current user and load their specific requests
+    const currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userId = currentUser.id;
+    
+    if (!userId) {
+      // No user logged in, show mock data
+      setCurrentRequests(mockRequests);
+      return;
+    }
+    
+    // Load user-specific requests
+    const userRequestsKey = `serviceRequests_${userId}`;
+    const userRequests = JSON.parse(localStorage.getItem(userRequestsKey) || '[]');
+    
+    // If user has no requests, use mock data for demo purposes
+    if (userRequests.length > 0) {
+      // Transform user requests to match the expected format
+      const transformedRequests = userRequests.map(req => ({
+        ...req,
+        createdAt: req.dateCreated,
+        property: {
+          address: `Property ${req.property}` // You might want to match this with actual property data
+        },
+        activity: {
+          views: 0,
+          likes: 0,
+          responses: req.responses?.length || 0,
+          lastActivity: req.dateCreated
+        }
+      }));
+      setCurrentRequests(transformedRequests);
+    } else {
+      // Use mock data if no user requests exist
+      setCurrentRequests(mockRequests);
+    }
   }, []);
 
   const getStatusColor = (status) => {
@@ -131,6 +168,11 @@ const CurrentRequestsPage = ({ onLogout, onBack, onNavigateToEdit }) => {
     if (onNavigateToEdit) {
       onNavigateToEdit(request);
     }
+  };
+
+  const handleBack = () => {
+    scrollToTop();
+    onBack();
   };
 
   const getPriorityColor = (priority) => {
@@ -176,12 +218,17 @@ const CurrentRequestsPage = ({ onLogout, onBack, onNavigateToEdit }) => {
 
   return (
     <div className="current-requests-page">
-      <Navbar onLogout={onLogout} onNavigateToDashboard={onBack} />
+      <Navbar 
+        onLogout={onLogout} 
+        onNavigateToDashboard={handleBack}
+        onNavigateToProfile={onNavigateToProfile}
+        onNavigateToAppSettings={onNavigateToAppSettings}
+      />
       
       <div className="requests-content">
         <div className="requests-header">
           <div className="header-main">
-            <button type="button" className="back-button" onClick={onBack}>
+            <button type="button" className="back-button" onClick={handleBack}>
               ← Back to Dashboard
             </button>
             <div className="page-title">
@@ -331,7 +378,7 @@ const CurrentRequestsPage = ({ onLogout, onBack, onNavigateToEdit }) => {
               <div className="no-requests-content">
                 <h3>No requests found</h3>
                 <p>You haven't created any service requests yet, or none match your current filters.</p>
-                <button className="create-request-btn" onClick={onBack}>
+                <button className="create-request-btn" onClick={handleBack}>
                   Create Your First Request
                 </button>
               </div>

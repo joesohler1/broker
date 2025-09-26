@@ -5,8 +5,9 @@ import ServiceCategorySelector from '../components/ServiceCategorySelector';
 import BudgetSelector from '../components/BudgetSelector';
 import LocationRadius from '../components/LocationRadius';
 import './NewServiceRequestPage.css'; // Reuse the same styles
+import { scrollToTop } from '../utils/scrollUtils';
 
-const EditServiceRequestPage = ({ onLogout, onBack, userProperties, requestData }) => {
+const EditServiceRequestPage = ({ onLogout, onBack, onNavigateToProfile, onNavigateToAppSettings, userProperties, requestData }) => {
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -207,20 +208,13 @@ const EditServiceRequestPage = ({ onLogout, onBack, userProperties, requestData 
     return timingLabels[timing] || timing;
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
   const nextStep = () => {
     if (validateStep(currentStep)) {
       if (currentStep === totalSteps) {
         // If on review step (step 4), save the changes
-        console.log('Service request updated:', formData);
         alert('Service request updated successfully!');
         // Here you would update to your backend
+        scrollToTop();
         onBack(); // Return to current requests
       } else {
         setCurrentStep(prev => Math.min(prev + 1, totalSteps));
@@ -230,10 +224,14 @@ const EditServiceRequestPage = ({ onLogout, onBack, userProperties, requestData 
     }
   };
 
+  const handleBack = () => {
+    scrollToTop();
+    onBack();
+  };
+
   const prevStep = () => {
     setCurrentStep(prev => Math.max(prev - 1, 1));
-    // Scroll to top after step change
-    setTimeout(() => scrollToTop(), 100);
+    scrollToTop();
   };
 
   const handleSubmit = (e) => {
@@ -247,43 +245,24 @@ const EditServiceRequestPage = ({ onLogout, onBack, userProperties, requestData 
     { value: 'high', label: 'High Priority', description: 'Within 24-48 hours' }
   ];
 
-  const getStepTitle = () => {
-    switch (currentStep) {
-      case 1: return 'Edit Job Details';
-      case 2: return 'Update Photos';
-      case 3: return 'Adjust Budget & Timeline';
-      case 4: return 'Review Changes';
-      default: return 'Edit Service Request';
-    }
-  };
-
   return (
     <div className="new-service-request-page">
-      <Navbar onLogout={onLogout} onNavigateToDashboard={onBack} />
+      <Navbar 
+        onLogout={onLogout} 
+        onNavigateToDashboard={handleBack}
+        onNavigateToProfile={onNavigateToProfile}
+        onNavigateToAppSettings={onNavigateToAppSettings}
+      />
       
       <div className="service-request-content">
         <div className="request-header">
           <div className="header-main">
-            <button type="button" className="back-button" onClick={onBack}>
+            <button type="button" className="back-button" onClick={handleBack}>
               ← Back to Current Requests
             </button>
             <div className="request-title">
               <h1>Edit Service Request</h1>
               <p>Update your service request details</p>
-            </div>
-          </div>
-
-          {/* Progress Indicator */}
-          <div className="progress-container">
-            <div className="progress-info">
-              <span className="step-indicator">Step {currentStep} of {totalSteps}</span>
-              <span className="step-title">{getStepTitle()}</span>
-            </div>
-            <div className="progress-bar">
-              <div 
-                className="progress-fill" 
-                style={{ width: `${(currentStep / totalSteps) * 100}%` }}
-              />
             </div>
           </div>
         </div>

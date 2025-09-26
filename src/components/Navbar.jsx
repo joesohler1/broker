@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Navbar.css';
 
-const Navbar = ({ onLogout, onNavigateToDashboard }) => {
+const Navbar = ({ onLogout, onNavigateToDashboard, onNavigateToProfile, onNavigateToAppSettings }) => {
+  const [showSettingsDropdown, setShowSettingsDropdown] = useState(false);
+
+  const handleSettingsClick = () => {
+    setShowSettingsDropdown(!showSettingsDropdown);
+  };
+
+  const handleProfileClick = () => {
+    setShowSettingsDropdown(false);
+    if (onNavigateToProfile) {
+      onNavigateToProfile();
+    }
+  };
+
+  const handleAppSettingsClick = () => {
+    setShowSettingsDropdown(false);
+    if (onNavigateToAppSettings) {
+      onNavigateToAppSettings();
+    }
+  };
+
   return (
     <nav className="navbar">
       <div 
@@ -12,7 +32,37 @@ const Navbar = ({ onLogout, onNavigateToDashboard }) => {
         <h1>FixBo</h1>
         <p className="tagline">Let's fix it.</p>
       </div>
-      <button className="logout-button" onClick={onLogout}>Logout</button>
+      
+      <div className="navbar-actions">
+        <div className="settings-dropdown">
+          <button 
+            className="settings-button" 
+            onClick={handleSettingsClick}
+            aria-label="Settings"
+          >
+            ⚙️ Settings
+          </button>
+          
+          {showSettingsDropdown && (
+            <div className="settings-dropdown-menu">
+              <button 
+                className="dropdown-item" 
+                onClick={handleProfileClick}
+              >
+                👤 Profile Settings
+              </button>
+              <button 
+                className="dropdown-item" 
+                onClick={handleAppSettingsClick}
+              >
+                🔧 App Settings
+              </button>
+            </div>
+          )}
+        </div>
+        
+        <button className="logout-button" onClick={onLogout}>Logout</button>
+      </div>
     </nav>
   );
 };

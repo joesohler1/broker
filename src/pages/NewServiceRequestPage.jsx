@@ -5,8 +5,9 @@ import ImageUpload from '../components/ImageUpload';
 import LocationRadius from '../components/LocationRadius';
 import ServiceCategorySelector from '../components/ServiceCategorySelector';
 import BudgetSelector from '../components/BudgetSelector';
+import { scrollToTop } from '../utils/scrollUtils';
 
-const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
+const NewServiceRequestPage = ({ onLogout, onBack, onNavigateToProfile, onNavigateToAppSettings, userProperties }) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -24,6 +25,7 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
 
   const [errors, setErrors] = useState({});
   const [currentStep, setCurrentStep] = useState(1);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const totalSteps = 4;
 
   // State to track which sections are in edit mode
@@ -123,31 +125,52 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
     }));
   };
 
-  const validateStep = (step) => {
-    const newErrors = {};
+  // Comprehensive validation for all steps before final submission
+  const validateAllSteps = () => {
+    const allErrors = {};
     
-    switch (step) {
-      case 1:
-        if (!formData.title.trim()) newErrors.title = 'Title is required';
-        if (!formData.description.trim()) newErrors.description = 'Description is required';
-        if (!formData.category) newErrors.category = 'Please select a category';
-        if (!formData.property) newErrors.property = 'Please select a property';
-        break;
-      case 2:
-        if (!formData.images || formData.images.length === 0) {
-          newErrors.images = 'At least one photo is required to help handymen provide accurate quotes';
-        }
-        break;
-      case 3:
-        if (!formData.budget) newErrors.budget = 'Please select a budget range';
-        break;
-      case 4:
-        // Final review - all previous validations should be done
-        break;
+    // Step 1: Details validation
+    if (!formData.title.trim()) allErrors.title = 'Title is required';
+    if (!formData.description.trim()) allErrors.description = 'Description is required';
+    if (!formData.category) allErrors.category = 'Please select a category';
+    if (!formData.property) allErrors.property = 'Please select a property';
+    
+    // Step 2: Photos validation
+    if (!formData.images || formData.images.length === 0) {
+      allErrors.images = 'At least one photo is required';
     }
     
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // Step 3: Budget validation
+    if (!formData.budget) allErrors.budget = 'Please select a budget range';
+    
+    // Additional validations can be added here
+    // Priority validation (if required)
+    if (!formData.priority) allErrors.priority = 'Please select priority level';
+    
+    setErrors(allErrors);
+    return Object.keys(allErrors).length === 0;
+  };
+
+  // Get missing items organized by step for validation card
+  const getMissingItems = () => {
+    const missingItems = [];
+    
+    // Step 1 items
+    if (!formData.title.trim()) missingItems.push({ step: 1, item: 'Service Title', stepName: 'Details' });
+    if (!formData.description.trim()) missingItems.push({ step: 1, item: 'Description', stepName: 'Details' });
+    if (!formData.category) missingItems.push({ step: 1, item: 'Category', stepName: 'Details' });
+    if (!formData.property) missingItems.push({ step: 1, item: 'Property', stepName: 'Details' });
+    if (!formData.priority) missingItems.push({ step: 1, item: 'Priority Level', stepName: 'Details' });
+    
+    // Step 2 items
+    if (!formData.images || formData.images.length === 0) {
+      missingItems.push({ step: 2, item: 'At least one photo', stepName: 'Photos' });
+    }
+    
+    // Step 3 items  
+    if (!formData.budget) missingItems.push({ step: 3, item: 'Budget range', stepName: 'Budget' });
+    
+    return missingItems;
   };
 
   const getFieldDisplayName = (fieldKey) => {
@@ -163,17 +186,30 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
   };
 
   const getValidationSummary = () => {
-    const errorKeys = Object.keys(errors);
-    if (errorKeys.length === 0) return null;
+    const missingItems = getMissingItems();
+    if (missingItems.length === 0) return null;
 
     return (
-      <div className="validation-summary">
-        <h4>Please complete the following required fields:</h4>
-        <ul>
-          {errorKeys.map(key => (
-            <li key={key}>{getFieldDisplayName(key)}</li>
-          ))}
-        </ul>
+      <div className="validation-card">
+        <div className="validation-header">
+          <h3>⚠️ Please Complete Required Fields</h3>
+        </div>
+        <div className="validation-content">
+          <p>The following items are required before submitting:</p>
+          <ul className="missing-items-list">
+            {missingItems.map((item, index) => (
+              <li key={index} className="missing-item">
+                <button 
+                  className="go-to-step-btn"
+                  onClick={() => setCurrentStep(item.step)}
+                >
+                  Step {item.step}: {item.stepName}
+                </button>
+                <span className="missing-field">• {item.item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   };
@@ -230,27 +266,74 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
     return timingLabels[timing] || timing;
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  const nextStep = () => {
+    if (currentStep === totalSteps) {
+      // On final step, validate all steps before showing confirmation
+      if (validateAllSteps()) {
+        setShowConfirmDialog(true);
+      }
+      // Validation errors will show in the validation card below the submit button
+    } else {
+      // For other steps, just move to next step (no validation required for navigation)
+      const newStep = Math.min(currentStep + 1, totalSteps);
+      setCurrentStep(newStep);
+      // Scroll to top after step change
+      setTimeout(() => scrollToTop(), 100);
+    }
   };
 
-  const nextStep = () => {
-    if (validateStep(currentStep)) {
-      if (currentStep === totalSteps) {
-        // If on review step (step 4), submit the form
-        console.log('Service request submitted:', formData);
-        alert('Service request submitted successfully! You will be notified when handymen respond.');
-        // Here you would submit to your backend
-        onBack(); // Return to dashboard
-      } else {
-        setCurrentStep(prev => Math.min(prev + 1, totalSteps));
-        // Scroll to top after step change
-        setTimeout(() => scrollToTop(), 100);
-      }
+  const handleConfirmSubmit = () => {
+    // Get current user data
+    const currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
+    const userId = currentUser.id;
+
+    if (!userId) {
+      alert('User session expired. Please log in again.');
+      return;
     }
+
+    // Create the service request object with user association
+    const serviceRequest = {
+      id: Date.now(),
+      userId: userId, // Associate with current user
+      title: formData.title,
+      description: formData.description,
+      category: formData.category,
+      priority: formData.priority,
+      property: formData.property,
+      images: formData.images,
+      budget: formData.budget,
+      timeline: formData.timeline,
+      searchRadius: formData.searchRadius,
+      preferredTiming: formData.preferredTiming,
+      contactMethod: formData.contactMethod,
+      additionalNotes: formData.additionalNotes,
+      status: 'Open',
+      dateCreated: new Date().toISOString(),
+      responses: []
+    };
+
+    // Save to user-specific localStorage key
+    const userRequestsKey = `serviceRequests_${userId}`;
+    const existingRequests = JSON.parse(localStorage.getItem(userRequestsKey) || '[]');
+    const updatedRequests = [...existingRequests, serviceRequest];
+    localStorage.setItem(userRequestsKey, JSON.stringify(updatedRequests));
+
+    // Set flag for success popup on dashboard (user-specific)
+    localStorage.setItem(`showSuccessPopup_${userId}`, 'true');
+    localStorage.setItem(`submittedRequestTitle_${userId}`, serviceRequest.title);
+
+    scrollToTop();
+    onBack(); // Return to dashboard with success popup
+  };
+
+  const handleBack = () => {
+    scrollToTop();
+    onBack();
+  };
+
+  const handleCancelSubmit = () => {
+    setShowConfirmDialog(false);
   };
 
   const prevStep = () => {
@@ -283,11 +366,16 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
 
   return (
     <div className="new-service-request-page">
-      <Navbar onLogout={onLogout} onNavigateToDashboard={onBack} />
+      <Navbar 
+        onLogout={onLogout} 
+        onNavigateToDashboard={handleBack}
+        onNavigateToProfile={onNavigateToProfile}
+        onNavigateToAppSettings={onNavigateToAppSettings}
+      />
       
       <div className="service-request-content">
         <div className="request-header">
-          <button className="back-button" onClick={onBack}>
+          <button className="back-button" onClick={handleBack}>
             ← Back to Dashboard
           </button>
           <div className="request-title">
@@ -308,7 +396,13 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
             {[1, 2, 3, 4].map(step => (
               <div 
                 key={step} 
-                className={`step-label ${currentStep >= step ? 'active' : ''} ${currentStep === step ? 'current' : ''}`}
+                className={`step-label ${currentStep >= step ? 'active' : ''} ${currentStep === step ? 'current' : ''} clickable`}
+                onClick={() => {
+                  setCurrentStep(step);
+                }}
+                style={{ 
+                  cursor: 'pointer'
+                }}
               >
                 <span className="step-number">{step}</span>
                 <span className="step-text">
@@ -865,6 +959,28 @@ const NewServiceRequestPage = ({ onLogout, onBack, userProperties }) => {
           </form>
         </div>
       </div>
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="confirmation-overlay">
+          <div className="confirmation-dialog">
+            <h3>Confirm Submission</h3>
+            <p>Are you sure you want to submit your service request?</p>
+            <div className="confirmation-details">
+              <strong>"{formData.title}"</strong>
+              <span className="budget-display">{formData.budget}</span>
+            </div>
+            <div className="confirmation-buttons">
+              <button className="cancel-btn" onClick={handleCancelSubmit}>
+                Cancel
+              </button>
+              <button className="confirm-btn" onClick={handleConfirmSubmit}>
+                Yes, Submit Request
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

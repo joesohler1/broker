@@ -4,6 +4,14 @@
   text-align: left;
 }
 
+.login-page h2 {
+  color: #2d3748;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .form-group {
   margin-bottom: 20px;
 }
@@ -24,7 +32,7 @@
   border-radius: 4px;
 }
 
-button {
+.login-btn {
   width: 100%;
   padding: 12px;
   background-color: #3398cc;
@@ -34,8 +42,79 @@ button {
   cursor: pointer;
   font-size: 1em;
   transition: background-color 0.2s;
+  margin-bottom: 2rem;
 }
 
-button:hover {
+.login-btn:hover {
   background-color: #40a2d9;
+}
+
+.signup-section {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  text-align: center;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  z-index: 100;
+}
+
+.signup-section p {
+  color: #718096;
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.create-account-link {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: auto;
+  white-space: nowrap;
+}
+
+.create-account-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.error-message {
+  background: #fed7d7;
+  color: #c53030;
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+  border: 1px solid #feb2b2;
+}
+
+/* Responsive design for signup section */
+@media (max-width: 768px) {
+  .signup-section {
+    position: static;
+    margin-top: 2rem;
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }
+  
+  .signup-section p {
+    white-space: normal;
+  }
+  
+  .create-account-link {
+    width: 100%;
+    white-space: normal;
+  }
 }
