@@ -4,6 +4,8 @@ import LoginPage from './pages/LoginPage';
 import AccountCreationPage from './pages/AccountCreationPage';
 import DashboardPage from './pages/DashboardPage';
 import HandymanDashboard from './pages/HandymanDashboard';
+import JobsMarketplace from './pages/JobsMarketplace';
+import JobDetails from './pages/JobDetails';
 import NewServiceRequestPage from './pages/NewServiceRequestPage';
 import CurrentRequestsPage from './pages/CurrentRequestsPage';
 import EditServiceRequestPage from './pages/EditServiceRequestPage';
@@ -24,6 +26,7 @@ function App() {
   const [showAccountCreation, setShowAccountCreation] = useState(false);
   const [isFirstTimeUser, setIsFirstTimeUser] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [selectedJobData, setSelectedJobData] = useState(null);
 
   // Check if user has completed setup on login
   useEffect(() => {
@@ -160,6 +163,9 @@ function App() {
       return;
     }
     
+    // Set the handyman setup completion flag
+    localStorage.setItem(`hasCompletedHandymanSetup_${userId}`, 'true');
+    
     setShowHandymanSetupWizard(false);
     setIsFirstTimeUser(false);
     
@@ -177,6 +183,9 @@ function App() {
       console.error('No user ID found during handyman setup skip');
       return;
     }
+    
+    // Also set completion flag when skipping so they don't get asked again
+    localStorage.setItem(`hasCompletedHandymanSetup_${userId}`, 'true');
     
     setShowHandymanSetupWizard(false);
     setIsFirstTimeUser(false);
@@ -290,6 +299,29 @@ function App() {
           <HandymanDashboard 
             onLogout={handleLogout}
             userData={userData}
+            onNavigateToJobsMarketplace={() => setCurrentPage('jobs-marketplace')}
+          />
+        );
+      case 'jobs-marketplace':
+        return (
+          <JobsMarketplace 
+            onLogout={handleLogout}
+            userData={userData}
+            onNavigateBack={() => setCurrentPage('handyman-dashboard')}
+            onNavigateToJobDetails={(jobData) => {
+              setSelectedJobData(jobData);
+              setCurrentPage('job-details');
+            }}
+          />
+        );
+      case 'job-details':
+        return (
+          <JobDetails 
+            onLogout={handleLogout}
+            userData={userData}
+            jobData={selectedJobData}
+            onNavigateBack={() => setCurrentPage('handyman-dashboard')}
+            onNavigateToMarketplace={() => setCurrentPage('jobs-marketplace')}
           />
         );
       case 'dashboard':

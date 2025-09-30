@@ -1,0 +1,629 @@
+/* Jobs Marketplace Styles */
+.jobs-marketplace {
+  min-height: 100vh;
+  background: #f8fafc;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.jobs-marketplace-content {
+  margin: 0 auto;
+  padding: 1rem;
+  width: calc(100% - 2rem);
+  max-width: 1200px;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.marketplace-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.header-main h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 0.5rem 0;
+}
+
+.header-subtitle {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.back-to-dashboard-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.back-to-dashboard-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Filters Section */
+.filters-section {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-bar {
+  margin-bottom: 1rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.filter-select {
+  flex: 1;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Results Summary */
+.results-summary {
+  margin-bottom: 1.5rem;
+}
+
+.results-summary h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+}
+
+/* Jobs List - New List Style Layout */
+.jobs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.job-item {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 120px;
+}
+
+/* Homeowner Avatar */
+.homeowner-avatar {
+  flex-shrink: 0;
+}
+
+.profile-image {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+}
+
+/* Job Info Section */
+.job-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.job-header-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.job-title-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.category-icon-small {
+  font-size: 1rem;
+}
+
+.job-title-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+  flex: 1;
+}
+
+.urgent-label {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.job-budget-compact {
+  text-align: right;
+}
+
+.budget-amount-large {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.job-summary {
+  margin: 0.25rem 0;
+}
+
+.job-description-short {
+  color: #4b5563;
+  line-height: 1.4;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.job-meta-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.homeowner-info-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.homeowner-name-compact {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+}
+
+.homeowner-rating-compact {
+  color: #f59e0b;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.job-details-compact {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.location-compact,
+.time-compact,
+.posted-compact {
+  white-space: nowrap;
+}
+
+/* Job Action Button */
+.job-action {
+  flex-shrink: 0;
+}
+
+.view-details-btn-compact {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  white-space: nowrap;
+}
+
+.view-details-btn-compact:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Legacy Jobs Grid - Keep for backwards compatibility but hide */
+.jobs-grid {
+  display: none;
+}
+
+.job-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.job-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.job-card.clickable {
+  cursor: pointer;
+}
+
+.job-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  border-color: #3b82f6;
+}
+
+/* Job Card Header */
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.job-title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.category-icon {
+  font-size: 1.5rem;
+}
+
+.job-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0;
+  flex: 1;
+}
+
+.urgency-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.urgency-urgent {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.urgency-normal {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.urgency-low {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.job-budget {
+  text-align: right;
+}
+
+.budget-amount {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.budget-type {
+  font-size: 0.875rem;
+  color: #64748b;
+  text-transform: capitalize;
+}
+
+/* Job Details */
+.job-description {
+  color: #4b5563;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.job-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.meta-icon {
+  font-size: 1rem;
+}
+
+.homeowner-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.homeowner-name {
+  font-weight: 600;
+  color: #374151;
+}
+
+.homeowner-rating {
+  color: #f59e0b;
+  font-weight: 500;
+}
+
+.job-requirements {
+  margin-bottom: 1.5rem;
+}
+
+.job-requirements h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem 0;
+}
+
+.job-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.job-requirements li {
+  padding: 0.25rem 0;
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+.job-requirements li:before {
+  content: "✓ ";
+  color: #10b981;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Job Actions */
+.job-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.view-details-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.view-details-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.contact-btn {
+  background: white;
+  color: #374151;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-btn:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+/* No Results */
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.no-results h3 {
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.no-results p {
+  color: #64748b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .jobs-marketplace-content {
+    padding: 0.5rem;
+    width: calc(100% - 1rem);
+  }
+
+  .marketplace-header {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .header-main h1 {
+    font-size: 2rem;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  /* Mobile List Layout */
+  .job-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .homeowner-avatar {
+    align-self: center;
+  }
+
+  .job-header-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .job-budget-compact {
+    text-align: left;
+  }
+
+  .job-meta-compact {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .job-details-compact {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .job-action {
+    width: 100%;
+  }
+
+  .view-details-btn-compact {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Legacy responsive rules */
+  .jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .job-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .job-title-section {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .urgency-badge {
+    margin-left: auto;
+  }
+
+  .job-budget {
+    text-align: left;
+  }
+
+  .job-meta {
+    flex-direction: column;
+  }
+
+  .homeowner-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .job-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-main h1 {
+    font-size: 1.75rem;
+  }
+
+  .job-card {
+    padding: 1rem;
+  }
+}
