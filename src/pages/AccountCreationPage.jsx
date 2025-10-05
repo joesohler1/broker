@@ -116,11 +116,11 @@ const AccountCreationPage = ({ onAccountCreated, onBackToLogin }) => {
 
   return (
     <div className="account-creation-page">
+      <button className="back-to-login" onClick={onBackToLogin}>
+        ← Back to Login
+      </button>
       <div className="account-container">
         <div className="account-header">
-          <button className="back-to-login" onClick={onBackToLogin}>
-            ← Back to Login
-          </button>
           <h1>Create Your Account</h1>
           <p className="account-subtitle">Join thousands of homeowners who trust FixBo for their property maintenance</p>
         </div>

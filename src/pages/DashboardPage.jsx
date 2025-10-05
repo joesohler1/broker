@@ -150,8 +150,8 @@ const DashboardPage = ({ onLogout, onNavigateToServiceRequest, onNavigateToCurre
       />
       <div className="dashboard-content">
         <div className="dashboard-header">
-          <h1>Hi{userData && userData.name ? ` ${userData.name.split(' ')[0]}` : ''}! Here's your dashboard.</h1>
-          <p className="dashboard-subtitle">Here's what's happening!</p>
+          <h2>Hi{userData && userData.name ? ` ${userData.name.split(' ')[0]}` : ''}!</h2>
+          <h3>Track your properties and maintenance.</h3>
         </div>
 
         {/* Properties Section */}

@@ -233,6 +233,18 @@ function App() {
     setCurrentPage('app-settings');
   };
 
+  const handleNavigateToSetupWizard = () => {
+    // Reset user state to trigger setup wizard
+    if (userData?.userType === 'handyman') {
+      setShowHandymanSetupWizard(true);
+      setShowSetupWizard(false);
+    } else {
+      setShowSetupWizard(true);
+      setShowHandymanSetupWizard(false);
+    }
+    setCurrentPage('dashboard');
+  };
+
   const handleBackToCurrentRequests = () => {
     setCurrentPage('current-requests');
     setEditingRequest(null);
@@ -282,6 +294,7 @@ function App() {
             onBack={handleBackToDashboard}
             onNavigateToProfile={handleNavigateToProfile}
             onNavigateToAppSettings={handleNavigateToAppSettings}
+            onNavigateToSetupWizard={handleNavigateToSetupWizard}
             userData={userData}
           />
         );

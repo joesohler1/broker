@@ -337,3 +337,83 @@
     align-items: flex-start;
   }
 }
+
+/* Setup & Onboarding Section */
+.setup-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.setup-card {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.setup-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.setup-card-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.setup-icon {
+  font-size: 2.5rem;
+  min-width: 60px;
+  text-align: center;
+}
+
+.setup-text {
+  flex: 1;
+}
+
+.setup-text h3 {
+  margin: 0 0 0.5rem 0;
+  color: #2C3E50;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.setup-text p {
+  margin: 0;
+  color: #6c757d;
+  line-height: 1.5;
+}
+
+.setup-action-btn {
+  background: #13B8FF;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.setup-action-btn:hover {
+  background: #12ACEF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(19, 184, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .setup-card-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+  
+  .setup-action-btn {
+    width: 100%;
+  }
+}

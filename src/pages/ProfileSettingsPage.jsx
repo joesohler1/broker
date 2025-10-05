@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import { scrollToTop } from '../utils/scrollUtils';
 import './ProfileSettingsPage.css';
 
-const ProfileSettingsPage = ({ onLogout, onBack, onNavigateToProfile, onNavigateToAppSettings, userData }) => {
+const ProfileSettingsPage = ({ onLogout, onBack, onNavigateToProfile, onNavigateToAppSettings, onNavigateToSetupWizard, userData }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -49,6 +49,25 @@ const ProfileSettingsPage = ({ onLogout, onBack, onNavigateToProfile, onNavigate
   const handleBack = () => {
     scrollToTop();
     onBack();
+  };
+
+  const handleResetSetupWizard = () => {
+    // Reset the setup completion flag in user data
+    const allUsers = JSON.parse(localStorage.getItem('allUsers') || '{}');
+    const currentUserEmail = localStorage.getItem('currentUserEmail');
+    
+    if (allUsers[currentUserEmail]) {
+      // Mark setup as incomplete to trigger the wizard
+      allUsers[currentUserEmail].setupComplete = false;
+      localStorage.setItem('allUsers', JSON.stringify(allUsers));
+      
+      // Update current user data
+      localStorage.setItem('userData', JSON.stringify(allUsers[currentUserEmail]));
+      
+      // Navigate to setup wizard
+      scrollToTop();
+      onNavigateToSetupWizard();
+    }
   };
 
   const validatePersonalInfo = () => {
@@ -204,6 +223,12 @@ const ProfileSettingsPage = ({ onLogout, onBack, onNavigateToProfile, onNavigate
                 onClick={() => setActiveSection('payment')}
               >
                 💳 Payment Methods
+              </button>
+              <button 
+                className={`sidebar-item ${activeSection === 'setup' ? 'active' : ''}`}
+                onClick={() => setActiveSection('setup')}
+              >
+                ⚙️ Setup & Onboarding
               </button>
             </div>
           </div>
@@ -368,6 +393,51 @@ const ProfileSettingsPage = ({ onLogout, onBack, onNavigateToProfile, onNavigate
                         <li>Automatic Billing</li>
                         <li>Payment History</li>
                       </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Setup & Onboarding Section */}
+            {activeSection === 'setup' && (
+              <div className="settings-section">
+                <div className="section-header">
+                  <h2>Setup & Onboarding</h2>
+                  <p>Manage your account setup and onboarding preferences</p>
+                </div>
+
+                <div className="setup-options">
+                  <div className="setup-card">
+                    <div className="setup-card-content">
+                      <div className="setup-icon">⚙️</div>
+                      <div className="setup-text">
+                        <h3>Reset Setup Wizard</h3>
+                        <p>
+                          Re-run the initial setup wizard to update your preferences, 
+                          property information, or account type. This will guide you 
+                          through all the setup steps again.
+                        </p>
+                      </div>
+                      <button 
+                        className="setup-action-btn"
+                        onClick={handleResetSetupWizard}
+                      >
+                        Start Setup Wizard
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="setup-card">
+                    <div className="setup-card-content">
+                      <div className="setup-icon">📋</div>
+                      <div className="setup-text">
+                        <h3>Account Information</h3>
+                        <p>
+                          Your account was created on {userData?.createdDate || 'Unknown'}.
+                          User type: {userData?.userType || 'Not specified'}.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>

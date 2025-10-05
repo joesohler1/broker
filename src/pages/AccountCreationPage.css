@@ -1,58 +1,71 @@
 .account-creation-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #4A90E2;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  position: relative;
 }
 
 .account-container {
   background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   max-width: 700px;
   width: 100%;
   overflow: hidden;
+  border: 3px solid #2C3E50;
+  margin-top: 4rem;
 }
 
 .account-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #2C3E50;
   color: white;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   text-align: center;
   position: relative;
+  border-radius: 16px 16px 0 0;
+  border-bottom: 3px solid #1A252F;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .back-to-login {
   position: absolute;
   top: 1.5rem;
-  left: 2rem;
-  background: rgba(255, 255, 255, 0.2);
+  left: 1.5rem;
+  background: rgba(0, 0, 0, 0.8);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
   font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
 }
 
 .back-to-login:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
-.account-header h1 {
+.account-creation-page .account-container .account-header h1 {
   font-size: 2rem;
   font-weight: 700;
   margin: 0 0 0.5rem 0;
+  color: #ffffff;
 }
 
-.account-subtitle {
+.account-creation-page .account-container .account-header .account-subtitle {
   font-size: 1.1rem;
-  opacity: 0.9;
+  opacity: 0.95;
   margin: 0;
+  color: #ffffff;
 }
 
 .account-form {
@@ -64,15 +77,16 @@
 }
 
 .form-section h3 {
-  color: #2d3748;
+  color: #2C3E50;
   font-size: 1.3rem;
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 1.5rem;
 }
 
 .section-subtitle {
-  color: #718096;
+  color: #A5A5A5;
   font-size: 0.95rem;
+  font-weight: 500;
   margin-bottom: 1.5rem;
 }
 
@@ -82,8 +96,8 @@
 
 .form-group label {
   display: block;
-  color: #4a5568;
-  font-weight: 500;
+  color: #000000;
+  font-weight: 700;
   margin-bottom: 0.5rem;
 }
 
@@ -112,7 +126,7 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #2C3E50;
 }
 
 .form-group input.success,
@@ -169,15 +183,15 @@
 }
 
 .communication-option:hover {
-  border-color: #667eea;
+  border-color: #2C3E50;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1);
 }
 
 .communication-option.selected {
-  border-color: #667eea;
-  background: linear-gradient(135deg, #f0f4ff 0%, #e6f3ff 100%);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  border-color: #2C3E50;
+  background: #f8f9fb;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
 }
 
 .communication-option input[type="radio"] {
@@ -204,15 +218,17 @@
 }
 
 .option-content strong {
-  color: #2d3748;
+  color: #000000;
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .option-content p {
-  color: #718096;
+  color: #A5A5A5;
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 .phone-group {
@@ -248,8 +264,9 @@
 }
 
 .platform-benefits h4 {
-  color: #2d3748;
+  color: #2C3E50;
   font-size: 1.1rem;
+  font-weight: 700;
   margin: 0 0 1rem 0;
 }
 
@@ -262,13 +279,15 @@
 }
 
 .platform-benefits li {
-  color: #4a5568;
+  color: #000000;
   font-size: 0.95rem;
   line-height: 1.4;
+  font-weight: 500;
 }
 
 .platform-benefits strong {
-  color: #2d3748;
+  color: #000000;
+  font-weight: 700;
 }
 
 /* Account Actions */
@@ -277,23 +296,24 @@
 }
 
 .create-account-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #13B8FF;
   color: white;
   border: none;
   padding: 1rem 2rem;
   border-radius: 8px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(19, 184, 255, 0.3);
 }
 
 .create-account-btn:hover:not(:disabled) {
+  background: #12ACEF;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 24px rgba(19, 184, 255, 0.4);
 }
 
 .create-account-btn:disabled {
@@ -369,14 +389,14 @@
 }
 
 .user-type-card:hover {
-  border-color: #667eea;
+  border-color: #2C3E50;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
 }
 
 .user-type-card.selected {
-  border-color: #667eea;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #2C3E50;
+  background: linear-gradient(135deg, #2C3E50 0%, #4A90E2 100%);
   color: white;
 }
 
@@ -391,6 +411,10 @@
   font-weight: 600;
 }
 
+.user-type-card.selected h4 {
+  color: white;
+}
+
 .user-type-card p {
   margin: 0;
   font-size: 0.9rem;
@@ -400,11 +424,13 @@
 
 .user-type-card.selected p {
   opacity: 0.9;
+  color: white;
 }
 
 .section-subtitle {
   font-size: 0.9rem;
-  color: #64748b;
+  color: #A5A5A5;
+  font-weight: 500;
   margin-bottom: 0.5rem;
 }
 

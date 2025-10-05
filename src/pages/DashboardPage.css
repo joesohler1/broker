@@ -1,17 +1,19 @@
 .dashboard-page {
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #4A90E2;
 }
 
 .dashboard-content {
   padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
-  background-color: #f0f3f6;
+  background-color: white;
   border-radius: 16px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 24px;
+  border: 3px solid #2C3E50;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   grid-template-areas: 
     "header header"
     "properties quick-actions"
@@ -20,19 +22,26 @@
 }
 
 .dashboard-header {
-  margin-bottom: 30px;
+  margin-bottom: 1rem;
   grid-area: header;
 }
 
-.dashboard-header h1 {
+.dashboard-header h2 {
   font-size: 2.5rem;
-  color: #2c3e50;
-  margin: 0 0 8px 0;
-  font-weight: 600;
+  color: #2C3E50;
+  margin: 0;
+  font-weight: 700;
+}
+
+.dashboard-header h3 {
+  font-size: 1.2rem;
+  color: #4A90E2;
+  margin: 0.5rem 0 0 0;
+  font-weight: 500;
 }
 
 .dashboard-subtitle {
-  color: #7f8c8d;
+  color: #4A90E2;
   font-size: 1.1rem;
   margin: 0;
 }
@@ -43,21 +52,21 @@
   background: white;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e1e8ed;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.1);
+  border: 2px solid #e2e8f0;
 }
 
 .dashboard-section h2 {
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: #2C3E50;
   margin: 0 0 20px 0;
   font-weight: 600;
 }
 
 .properties-section {
   grid-area: properties;
-  background: linear-gradient(135deg, #f8fafb 0%, #f2f7fa 100%);
-  border: 1px solid #d4e6f1;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #4A90E2;
   position: relative;
   overflow: hidden;
 }
@@ -69,14 +78,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
-  opacity: 0.7;
+  background: linear-gradient(90deg, #4A90E2 0%, #2C3E50 100%);
 }
 
 .quick-actions-section {
   grid-area: quick-actions;
-  background: linear-gradient(135deg, #faf9fb 0%, #f5f2f8 100%);
-  border: 1px solid #e1d6f1;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #2C3E50;
   position: relative;
   overflow: hidden;
 }
@@ -88,14 +96,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #9b59b6 0%, #8e44ad 100%);
-  opacity: 0.7;
+  background: linear-gradient(90deg, #2C3E50 0%, #4A90E2 100%);
 }
 
 .requests-section {
   grid-area: requests;
-  background: linear-gradient(135deg, #f9fbfa 0%, #f3f8f5 100%);
-  border: 1px solid #d4f1e1;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #13B8FF;
   position: relative;
   overflow: hidden;
 }
@@ -107,14 +114,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #27ae60 0%, #229954 100%);
-  opacity: 0.7;
+  background: linear-gradient(90deg, #13B8FF 0%, #12ACEF 100%);
 }
 
 .appointments-section {
   grid-area: appointments;
-  background: linear-gradient(135deg, #fbfaf9 0%, #f8f5f3 100%);
-  border: 1px solid #f1e1d4;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #4A90E2;
   position: relative;
   overflow: hidden;
 }
@@ -126,14 +132,13 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #e67e22 0%, #d35400 100%);
-  opacity: 0.7;
+  background: linear-gradient(90deg, #4A90E2 0%, #2C3E50 100%);
 }
 
 .activity-section {
   grid-area: activity;
-  background: linear-gradient(135deg, #fbfafb 0%, #f7f5f8 100%);
-  border: 1px solid #ede1f1;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px solid #2C3E50;
   position: relative;
   overflow: hidden;
 }
@@ -145,8 +150,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #f39c12 0%, #e67e22 100%);
-  opacity: 0.7;
+  background: linear-gradient(90deg, #2C3E50 0%, #13B8FF 100%);
 }
 
 .properties-grid {

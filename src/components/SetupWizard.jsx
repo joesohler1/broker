@@ -150,10 +150,9 @@ const SetupWizard = ({ onComplete, onSkip }) => {
   const renderStep1 = () => (
     <div className="setup-step">
       <div className="step-header">
-        <h2>Welcome to FixBo!</h2>
-        <p>Let's get you set up. What describes your situation best?</p>
+        <h2>User Type</h2>
+        <p>Tell us about your role so we can customize your experience</p>
       </div>
-      
       <div className="user-type-options">
         {userTypeOptions.map(option => (
           <button
@@ -175,6 +174,9 @@ const SetupWizard = ({ onComplete, onSkip }) => {
   const renderStep2 = () => (
     <div className="setup-step">
       <div className="step-header">
+        <button className="setup-back-button" onClick={handleBack}>
+          ← Back
+        </button>
         <h2>Property Information</h2>
         <p>Tell us about your {userType === 'manager' ? 'first property' : 'property'}. You can always add more later!</p>
       </div>
@@ -322,10 +324,6 @@ const SetupWizard = ({ onComplete, onSkip }) => {
       </div>
 
       <div className="step-actions">
-        <button className="btn-back" onClick={handleBack}>
-          ← Back
-        </button>
-        
         <div className="right-actions">
           <button className="btn-skip" onClick={onSkip}>
             Skip for now
@@ -345,6 +343,9 @@ const SetupWizard = ({ onComplete, onSkip }) => {
   const renderStep3 = () => (
     <div className="setup-step">
       <div className="step-header">
+        <button className="setup-back-button" onClick={handleBack}>
+          ← Edit Details
+        </button>
         <h2>Review Your Information</h2>
         <p>Everything looks good? You can always update this later in your dashboard.</p>
       </div>
@@ -399,16 +400,12 @@ const SetupWizard = ({ onComplete, onSkip }) => {
       </div>
 
       <div className="step-actions">
-        <button className="btn-back" onClick={handleBack}>
-          ← Edit Details
-        </button>
-        
         <div className="right-actions">
           <button className="btn-skip" onClick={onSkip}>
             Skip for now
           </button>
           <button className="btn-complete" onClick={handleComplete}>
-            Complete Setup 🎉
+            Complete Setup
           </button>
         </div>
       </div>
@@ -418,18 +415,25 @@ const SetupWizard = ({ onComplete, onSkip }) => {
   return (
     <div className="setup-wizard">
       <div className="setup-container">
-        <div className="progress-bar">
+        <div className="setup-header">
+          <h2>Welcome to FixBo!</h2>
+          <p>Let's get you started</p>
+          
           <div className="progress-steps">
-            <div className={`progress-step ${currentStep >= 1 ? 'active' : ''}`}>1</div>
+            <div className="progress-item">
+              <div className={`progress-step ${currentStep >= 1 ? 'active' : ''}`}>1</div>
+              <span className="progress-label">User Type</span>
+            </div>
             <div className={`progress-line ${currentStep >= 2 ? 'active' : ''}`}></div>
-            <div className={`progress-step ${currentStep >= 2 ? 'active' : ''}`}>2</div>
+            <div className="progress-item">
+              <div className={`progress-step ${currentStep >= 2 ? 'active' : ''}`}>2</div>
+              <span className="progress-label">Property Info</span>
+            </div>
             <div className={`progress-line ${currentStep >= 3 ? 'active' : ''}`}></div>
-            <div className={`progress-step ${currentStep >= 3 ? 'active' : ''}`}>3</div>
-          </div>
-          <div className="progress-labels">
-            <span>Welcome</span>
-            <span>Property Info</span>
-            <span>Review</span>
+            <div className="progress-item">
+              <div className={`progress-step ${currentStep >= 3 ? 'active' : ''}`}>3</div>
+              <span className="progress-label">Review</span>
+            </div>
           </div>
         </div>
 

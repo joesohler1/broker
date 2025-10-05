@@ -47,7 +47,10 @@ const LoginPage = ({ onLogin, onCreateAccount }) => {
     }
     
     if (!user) {
-      setError(`No account found with email: ${formData.email}`);
+      setError({
+        type: 'no-account',
+        email: formData.email
+      });
       return;
     }
 
@@ -72,38 +75,66 @@ const LoginPage = ({ onLogin, onCreateAccount }) => {
 
   return (
     <div className="login-page">
-      <h2>Welcome Back</h2>
-      {error && <div className="error-message">{error}</div>}
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Email</label>
-          <input 
-            type="email" 
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required 
-          />
+      <div className="login-container">
+        <div className="login-header">
+          <p className="login-subtitle">Sign in to your FixBo account</p>
         </div>
-        <div className="form-group">
-          <label>Password</label>
-          <input 
-            type="password" 
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            required 
-          />
+
+        <div className="login-form">
+          {error && (
+            <div className="error-message">
+              {typeof error === 'string' ? error : (
+                error.type === 'no-account' ? (
+                  <>
+                    No account found with email: {error.email}
+                    <span 
+                      className="signup-link" 
+                      onClick={handleCreateAccount}
+                    >
+                      Don't have an account? Sign up
+                    </span>
+                  </>
+                ) : error
+              )}
+            </div>
+          )}
+          
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email</label>
+              <input 
+                type="email" 
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required 
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input 
+                type="password" 
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                required 
+              />
+            </div>
+            
+            <button type="submit" className="login-btn">Sign In</button>
+            
+            <div className="forgot-password">
+              <a href="#" className="forgot-link">Forgot your password?</a>
+            </div>
+          </form>
         </div>
-        <button type="submit" className="login-btn">Login</button>
-      </form>
-      
-      <div className="signup-section">
-        <p>New to FixBo?</p>
-        <button className="create-account-link" onClick={handleCreateAccount}>
-          Create Your Account
-        </button>
+
+        <div className="signup-section">
+          <p>New to FixBo?</p>
+          <button className="create-account-link" onClick={handleCreateAccount}>
+            Create Your Account
+          </button>
+        </div>
       </div>
     </div>
   );

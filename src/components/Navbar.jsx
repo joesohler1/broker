@@ -33,6 +33,10 @@ const Navbar = ({ onLogout, onNavigateToDashboard, onNavigateToProfile, onNaviga
         <p className="tagline">Let's fix it.</p>
       </div>
       
+      <div className="navbar-center">
+        <h2 className="page-title">Dashboard</h2>
+      </div>
+      
       <div className="navbar-actions">
         <div className="settings-dropdown">
           <button 
@@ -40,7 +44,7 @@ const Navbar = ({ onLogout, onNavigateToDashboard, onNavigateToProfile, onNaviga
             onClick={handleSettingsClick}
             aria-label="Settings"
           >
-            ⚙️ Settings
+            Settings
           </button>
           
           {showSettingsDropdown && (
